@@ -8,4 +8,6 @@ trap 'echo "If you terminate this, you will leave a mess."' TERM
 
 echo Press any key to terminate the experiment
 read line
-kill -INT $(jobs -p)
+kill -KILL $(jobs -p)
+killall python
+
