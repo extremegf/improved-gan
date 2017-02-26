@@ -16,6 +16,7 @@ parser.add_argument('--seed_data', type=int, default=1)
 parser.add_argument('--unlabeled_weight', type=float, default=1.)
 parser.add_argument('--batch_size', type=int, default=100)
 parser.add_argument('--count', type=int, default=10)
+parser.add_argument('--iter_limit', type=int, default=300)
 args = parser.parse_args()
 print(args)
 
@@ -120,7 +121,7 @@ init_param(trainx[:500]) # data dependent initialization
 
 # //////////// perform training //////////////
 lr = 0.003
-for epoch in range(300):
+for epoch in range(args.iter_limit):
     begin = time.time()
 
     # construct randomly permuted minibatches
