@@ -1,7 +1,7 @@
 import numpy as np
 
 # # load MNIST data
-from gan_unlabeled_classif import gan_unlabelled_classif
+from experiment_gan_unlabeled_classif import gan_unlabelled_classif
 
 LABEL_CNT = 9
 INP_SIZE = 27 * 32
