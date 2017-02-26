@@ -9,7 +9,7 @@ trap 'exit 1' INT
 for ((i=$A; i < $B; i+=$STEP))
 do
     echo 'Testing seed' $i
-    cd ../../
+    cd ../../mnist_svhn_cifar10/
     python train_mnist_feature_matching.py \
         --seed=$i --seed_data=$i --iter_limit=80
 done
