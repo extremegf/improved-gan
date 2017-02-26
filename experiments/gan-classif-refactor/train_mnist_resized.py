@@ -40,10 +40,10 @@ def convert_to_size(x):
 
 data = np.load('mnist.npz')
 
-trainx = np.concatenate([data['x_train'], data['x_valid']], axis=0)
+trainx = np.concatenate([data['x_train'], data['x_valid']], axis=0).astype(np.float32)
 trainx = convert_to_size(trainx)
 
-testx = data['x_test']
+testx = data['x_test'].astype(np.float32)
 testx = convert_to_size(testx)
 
 trainy = np.concatenate([data['y_train'], data['y_valid']]).astype(np.int32)
