@@ -86,7 +86,8 @@ trainx = trainx[inds]
 trainy = trainy[inds]
 txs = []
 tys = []
-for j in range(LABEL_CNT):
+for _j in range(10):
+    j = _j % LABEL_CNT
     txs.append(trainx[trainy==j][:args.count])
     tys.append(trainy[trainy==j][:args.count])
 txs = np.concatenate(txs, axis=0)
