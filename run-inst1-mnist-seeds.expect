@@ -1,0 +1,10 @@
+spawn git add -u
+interact
+spawn git ci -m'autocommit'
+interact
+spawn ./ppull.sh
+interact
+spawn ssh gpu-instance
+expect "$"
+send "cd ~/improved-gan/experiments/mnist-seeds; ./run_experiment.sh\r"
+interact
