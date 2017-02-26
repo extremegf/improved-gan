@@ -27,15 +27,57 @@ lasagne.random.set_rng(np.random.RandomState(rng.randint(2 ** 15)))
 data_rng = np.random.RandomState(args.seed_data)
 
 # load MNIST data
-LABEL_CNT=10
+LABEL_CNT = 9
+INP_SIZE = 27*32
+
+
+def reduce_labels(d):
+    for i in range(d.shape[0]):
+        if d[i] > LABEL_CNT-1:
+            d[i] = LABEL_CNT-1
+
+
 data = np.load('mnist.npz')
 trainx = np.concatenate([data['x_train'], data['x_valid']], axis=0).astype(th.config.floatX)
+
+def npshow(s):
+    for r in range(s.shape[0]):
+        for e in s[r]:
+            if int(e*10) == 0:
+                print '.',
+            else:
+                print int(e * 10),
+        print
+
+# npshow(trainx[0])
+
+def convert_to_size(x):
+    _trainx = []
+    x = x.reshape((-1, 28, 28))
+    for i in range(x.shape[0]):
+        rows = []
+        for r in range(27):
+            row = x[i][r]
+            row = np.append(row, [0.0] * 4)
+            rows.append(row)
+        _trainx.append(np.concatenate(rows))
+    x = np.concatenate(_trainx).astype(th.config.floatX)
+    return x.reshape((-1, 27 * 32))
+
+trainx = convert_to_size(trainx)
+
+# npshow(trainx.reshape((-1, 27, 32))[0])
+
+trainy = np.concatenate([data['y_train'], data['y_valid']]).astype(np.int32)
+reduce_labels(trainy)
+
 trainx_unl = trainx.copy()
 trainx_unl2 = trainx.copy()
-trainy = np.concatenate([data['y_train'], data['y_valid']]).astype(np.int32)
 nr_batches_train = int(trainx.shape[0]/args.batch_size)
 testx = data['x_test'].astype(th.config.floatX)
+testx = convert_to_size(testx)
 testy = data['y_test'].astype(np.int32)
+reduce_labels(testy)
 nr_batches_test = int(testx.shape[0]/args.batch_size)
 
 # select labeled data
@@ -55,11 +97,12 @@ noise = theano_rng.uniform(size=(args.batch_size, 100))
 gen_layers = [LL.InputLayer(shape=(args.batch_size, 100), input_var=noise)]
 gen_layers.append(nn.batch_norm(LL.DenseLayer(gen_layers[-1], num_units=500, nonlinearity=T.nnet.softplus), g=None))
 gen_layers.append(nn.batch_norm(LL.DenseLayer(gen_layers[-1], num_units=500, nonlinearity=T.nnet.softplus), g=None))
-gen_layers.append(nn.l2normalize(LL.DenseLayer(gen_layers[-1], num_units=28**2, nonlinearity=T.nnet.sigmoid)))
+gen_layers.append(nn.l2normalize(LL.DenseLayer(gen_layers[-1], num_units=INP_SIZE,
+                                               nonlinearity=T.nnet.sigmoid)))
 gen_dat = LL.get_output(gen_layers[-1], deterministic=False)
 
 # specify supervised model
-layers = [LL.InputLayer(shape=(None, 28**2))]
+layers = [LL.InputLayer(shape=(None, INP_SIZE))]
 layers.append(nn.GaussianNoiseLayer(layers[-1], sigma=0.3))
 layers.append(nn.DenseLayer(layers[-1], num_units=1000))
 layers.append(nn.GaussianNoiseLayer(layers[-1], sigma=0.5))
