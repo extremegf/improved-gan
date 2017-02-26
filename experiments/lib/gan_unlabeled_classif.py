@@ -78,7 +78,7 @@ def gan_unlabelled_classif(trainx, trainy, testx, testy, lab_cnt, inp_size,
     layers.append(nn.GaussianNoiseLayer(layers[-1], sigma=0.5))
     layers.append(nn.DenseLayer(layers[-1], num_units=250))
     layers.append(nn.GaussianNoiseLayer(layers[-1], sigma=0.5))
-    layers.append(nn.DenseLayer(layers[-1], num_units=10, nonlinearity=None, train_scale=True))
+    layers.append(nn.DenseLayer(layers[-1], num_units=lab_cnt, nonlinearity=None, train_scale=True))
 
     # costs
     labels = T.ivector()
