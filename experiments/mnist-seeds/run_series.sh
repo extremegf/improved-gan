@@ -10,6 +10,6 @@ for ((i=$A; i < $B; i+=$STEP))
 do
     echo 'Testing seed' $i
     cd ../../
-    python mnist_svhn_cifar10/train_mnist_feature_matching.py \
+    python train_mnist_feature_matching.py \
         --seed=$i --seed_data=$i --iter_limit=80
 done
