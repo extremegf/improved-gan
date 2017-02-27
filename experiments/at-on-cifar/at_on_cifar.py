@@ -194,8 +194,8 @@ for epoch in range(1200):
     test_err /= nr_batches_test
 
     # report
-    print("Iteration %d, count = %d, s = %d, time = %ds, loss_lab = %.4f, loss_unl = %.4f, train err = %.4f, test err = %.4f" % (
-        args.count, args.net_scale_factor, epoch, time.time() - begin, loss_lab, loss_unl, train_err, test_err))
+    print("Iteration %d, count = %d, sf = %d, time = %ds, loss_lab = %.4f, loss_unl = %.4f, train err = %.4f, test err = %.4f" % (
+         epoch, args.count, args.net_scale_factor, time.time() - begin, loss_lab, loss_unl, train_err, test_err))
     sys.stdout.flush()
 
     # todo
