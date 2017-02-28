@@ -51,7 +51,7 @@ trainx = trainx[inds]
 trainy = trainy[inds]
 txs = []
 tys = []
-for j in range(6):
+for j in xrange(6):
     txs.append(trainx[trainy == j][:args.count])
     tys.append(trainy[trainy == j][:args.count])
 txs = np.concatenate(txs, axis=0)
@@ -144,7 +144,7 @@ gen_param_updates = nn.adam_updates(gen_params, loss_gen, lr=lr, mom1=0.5)
 train_batch_gen = th.function(inputs=[x_unl, lr], outputs=None, updates=gen_param_updates)
 
 # //////////// perform training //////////////
-for epoch in range(1200):
+for epoch in xrange(1200):
     begin = time.time()
 
     if args.break_on_epoch == epoch:
@@ -155,7 +155,7 @@ for epoch in range(1200):
     # construct randomly permuted minibatches
     trainx = []
     trainy = []
-    for t in range(int(np.ceil(trainx_unl.shape[0] / float(txs.shape[0])))):
+    for t in xrange(int(np.ceil(trainx_unl.shape[0] / float(txs.shape[0])))):
         inds = rng.permutation(txs.shape[0])
         trainx.append(txs[inds])
         trainy.append(tys[inds])
@@ -189,7 +189,7 @@ for epoch in range(1200):
 
     # test
     test_err = 0.
-    for t in range(nr_batches_test):
+    for t in xrange(nr_batches_test):
         test_err += test_batch(testx[t * args.batch_size:(t + 1) * args.batch_size], testy[t * args.batch_size:(t + 1) * args.batch_size])
     test_err /= nr_batches_test
 
